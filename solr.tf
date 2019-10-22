@@ -4,23 +4,23 @@ provider "google" {
   region      = "${var.region}"
 }
 
-//SonarQube Instance
-resource "google_compute_address" "sonarqubeip" {
-  name   = "${var.sonarqube_instance_ip_name}"
-  region = "${var.sonarqube_instance_ip_region}"
+//Solr Instance
+resource "google_compute_address" "solrip" {
+  name   = "${var.solr_instance_ip_name}"
+  region = "${var.solr_instance_ip_region}"
 }
 
 
-resource "google_compute_instance" "sonarqube" {
+resource "google_compute_instance" "apache-solr" {
   name         = "${var.instance_name}"
-  machine_type = "n1-standard-2"
-  zone         = "us-east1-b"
+  machine_type = "n1-standard-1"
+  zone         = "us-central1-a"
 
   tags = ["name", "solr", "http-server"]
 
   boot_disk {
     initialize_params {
-      image = "centos-7-v20180129"
+      image = "debian-9-stretch-v20191014 "
     }
   }
 
@@ -29,16 +29,16 @@ resource "google_compute_instance" "sonarqube" {
   #}
 
   network_interface {
-    network    = "${var.sonarvpc}"
-    subnetwork = "${var.sonarsub}"
+    network    = "${var.solrvpc}"
+    subnetwork = "${var.solrsub}"
     access_config {
       // Ephemeral IP
-      nat_ip = "${google_compute_address.sonarqubeip.address}"
+      nat_ip = "${google_compute_address.solrip.address}"
     }
   }
   metadata = {
     name = "solr"
   }
 
-  metadata_startup_script = "sudo yum update -y;sudo yum install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; cd /apachesolr; sudo chmod 777 /apachesolr/*; sudo sh solr.sh"
+  metadata_startup_script = "sudo yum update -y;sudo yum install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; cd /apache-solr; sudo chmod 777 /apachesolr/*; sudo sh solr.sh"
 }
