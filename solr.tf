@@ -40,5 +40,5 @@ resource "google_compute_instance" "apache-solr" {
     name = "solr"
   }
 
-  metadata_startup_script = "sudo yum update -y;sudo yum install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; cd /apache-solr; sudo chmod 777 /apachesolr/*; sudo sh solr.sh"
+  metadata_startup_script = "sudo yum update -y;sudo yum install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; sudo chmod 777 /apachesolr/*; cd /apachesolr; sudo sh solr.sh"
 }
