@@ -20,7 +20,7 @@ resource "google_compute_instance" "apache-solr" {
 
   boot_disk {
     initialize_params {
-      image = "debian-9-stretch-v20191014 "
+      image = "debian-cloud/debian-9"
     }
   }
 
@@ -40,5 +40,5 @@ resource "google_compute_instance" "apache-solr" {
     name = "solr"
   }
 
-  metadata_startup_script = "sudo yum update -y;sudo yum install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; sudo chmod 777 /apachesolr/*; cd /apachesolr; sudo sh solr.sh"
+  metadata_startup_script = "sudo apt-get update -y;sudo apt-get install git -y; sudo git clone https://github.com/Diksha86/apachesolr.git; cd apachesolr; sudo chmod 777 *;sudo sh solr.sh"
 }
